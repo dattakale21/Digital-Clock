@@ -1,62 +1,51 @@
-
-
 // ********************* Digital clock **********************
-
-let a = new Date();
-console.log(a);
-
-let b = a.getHours();
-let c = a.getMinutes();
-let d = a.getSeconds();
-
-let sec = d;
-let min = c;
-let hou = b;
-
 let hour = document.querySelector("#hour");
 let minutes = document.querySelector("#min");
 let seconds = document.querySelector("#sec");
 
-setInterval(() => {
-    sec = sec + 1;
-}, 1000);
+function updateClock() {
+    let addZero = (i) => {
+        if (i < 10) {
+            return "0" + i;
+        }
+        return i;
+    };
 
-setInterval(() => {
-    if (sec == 60) {
-        min = min + 1;
-        sec = 0;
-        hour.innerHTML = b + " : ";
-        minutes.innerHTML = min + " : ";
-        seconds.innerHTML = sec;
-        // console.log(b + " : " + min + " : " + sec)
-    }
+    setInterval(() => {
+        let a = new Date();
+        let b = a.getHours();
+        let c = a.getMinutes();
+        let d = a.getSeconds();
 
-    else if (min == 60) {
-        hou = hou + 1;
-        min = 0;
-        sec = 0;
+        let sec = addZero(d);
+        let min = addZero(c);
+        let hou = addZero(b);
+
+        sec = parseInt(sec); // to remove any leading zero issues
+
+        sec = sec + 1;
+
+        if (sec === 60) {
+            min = parseInt(min); // to remove any leading zero issues
+            min = min + 1;
+            sec = 0;
+        }
+
+        if (min === 60) {
+            hou = parseInt(hou); // to remove any leading zero issues
+            hou = hou + 1;
+            min = 0;
+        }
+
+        if (hou === 24) {
+            hou = 0;
+        }
+
         hour.innerHTML = hou + " : ";
         minutes.innerHTML = min + " : ";
-        seconds.innerHTML = sec;
-        // console.log(hou + " : " + min + " : " + sec)
-    }
+        seconds.innerHTML = addZero(sec);
+    }, 1000);
+}
 
-    else if (hou == 25) {
-        hou = 13;
-        min = 0;
-        sec = 0;
-        hour.innerHTML = hou + " : ";
-        minutes.innerHTML = min + " : ";
-        seconds.innerHTML = sec;
-        // console.log(hou + " : " + min + " : " + sec)
-    }
-
-    else {
-        hour.innerHTML = b + " : ";
-        minutes.innerHTML = min + " : ";
-        seconds.innerHTML = sec;
-        // console.log(b + " : " + min + " : " + sec)
-    }
-}, 1000);
-
+updateClock();
 // Code By- Datta kale
